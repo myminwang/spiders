@@ -8,9 +8,10 @@ import codecs
 import json
 import pymysql
 import pymysql.cursors
+import datetime
 
 from scrapy.pipelines.images import ImagesPipeline
-from scrapy.exporters import JsonItemExporter
+from scrapy.exporters import JsonItemExporter, XmlItemExporter
 from twisted.enterprise import adbapi  # 提供异步化数据库处理的方式
 
 
@@ -38,7 +39,8 @@ class JsonExporterPipeline(object):
     """使用scrapy提供的JSON EXPORT 导出json文件"""
 
     def __init__(self):
-        self.file = open('articleexport.json', 'wb')
+        file_name = str(datetime.datetime.now().date()) + '.json'
+        self.file = open(file_name, 'wb')
         self.exporter = JsonItemExporter(self.file, encoding='utf-8', ensure_ascii=False)
         self.exporter.start_exporting()
 
@@ -50,10 +52,27 @@ class JsonExporterPipeline(object):
         self.exporter.export_item(item)
         return item
 
+class XmlExportPipeline(object):
+    """使用scrapy提供的xml EXPORT 导出xml文件"""
+    def __init__(self):
+        file_name = str(datetime.datetime.now().date()) + '.xml'
+        self.file = open(file_name, 'wb')
+        self.exporter = XmlItemExporter(file=self.file)
+        self.exporter.start_exporting()
+
+    def process_item(self,item,spider):
+        self.exporter.export_item(item)
+        return item
+
+    def close_spider(self,spider):
+        self.exporter.finish_exporting()
+        self.file.close()
+
+
 
 class MysqlPipeline(object):
     def __init__(self):
-        self.conn = pymysql.connect(host='localhost', user='root', password='WZQwzq+123', database='spiders')
+        self.conn = pymysql.connect(host='localhost', user='root', password='******', database='spiders')
         self.cursor = self.conn.cursor()
 
     def process_item(self, item, spider):

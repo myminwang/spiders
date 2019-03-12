@@ -68,16 +68,19 @@ ROBOTSTXT_OBEY = False
 ITEM_PIPELINES = {
     # 'spiders.pipelines.SpidersPipeline': 300,
     # 'spiders.pipelines.JsonWithEncodingPipeline': 2,
-    # 'spiders.pipelines.JsonExporterPipeline': 2,
+    'spiders.pipelines.JsonExporterPipeline': 2,
+    # 'spiders.pipelines.XmlExportPipeline': 2,
     # 'spiders.pipelines.MysqlPipeline': 2,
-    'spiders.pipelines.MysqlTwishtedPipeline': 2,
+    # 'spiders.pipelines.MysqlTwishtedPipeline': 2,
     # 'scrapy.pipelines.images.ImagesPipeline': 1,  # 设置图片自动下载的管道，后面的数字表示执行的优先级,图片下载后的文件名根据url的指纹自动生成
-    'spiders.pipelines.ArticlaImagePipeline': 1,
+    # 'spiders.pipelines.ArticlaImagePipeline': 1,
 }
 
 IMAGES_URLS_FIELD = 'front_image_url'  # pipeline接收的值是数组
 prioject_dir = os.path.abspath(os.path.dirname(__file__))
 IMAGES_STORE = os.path.join(prioject_dir, 'images')
+
+
 
 # IMAGES_MIN_HEIGHT = 100
 # IMAGES_MIN_WIDTH = 100     # 表示下载的图片必须是大于 100X100的
@@ -106,4 +109,4 @@ IMAGES_STORE = os.path.join(prioject_dir, 'images')
 MYSQL_HOST = 'localhost'
 MYSQL_DBNAME = 'spiders'
 MYSQL_USER  = 'root'
-MYSQL_PASSWORD = 'WZQwzq+123'
+MYSQL_PASSWORD = '*******'
