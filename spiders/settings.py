@@ -54,7 +54,8 @@ ROBOTSTXT_OBEY = False
 # Enable or disable downloader middlewares
 # See https://doc.scrapy.org/en/latest/topics/downloader-middleware.html
 # DOWNLOADER_MIDDLEWARES = {
-#    'spiders.middlewares.SpidersDownloaderMiddleware': 543,
+#    # 'spiders.middlewares.SpidersDownloaderMiddleware': 543,
+#     'spiders.middlewares.ProxyMiddleware': 543,
 # }
 
 # Enable or disable extensions
@@ -110,3 +111,4 @@ MYSQL_HOST = 'localhost'
 MYSQL_DBNAME = 'spiders'
 MYSQL_USER  = 'root'
 MYSQL_PASSWORD = '*******'
+

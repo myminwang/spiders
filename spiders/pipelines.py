@@ -4,7 +4,7 @@
 #
 # Don't forget to add your pipeline to the ITEM_PIPELINES setting
 # See: https://doc.scrapy.org/en/latest/topics/item-pipeline.html
-import codecs
+import codecs, os
 import json
 import pymysql
 import pymysql.cursors
@@ -24,7 +24,8 @@ class JsonWithEncodingPipeline(object):
     """自己写的：将结果输出到json文件中，需要在配置中添加该管道及优先级"""
 
     def __init__(self):
-        self.file = codecs.open('article.json', 'w', encoding='utf-8')
+        file_name = str(datetime.datetime.now().date()) + '.json'
+        self.file = codecs.open('other.json', 'a', encoding='utf-8')
 
     def process_item(self, item, spider):
         lines = json.dumps(dict(item), ensure_ascii=False) + '\n'
@@ -39,7 +40,7 @@ class JsonExporterPipeline(object):
     """使用scrapy提供的JSON EXPORT 导出json文件"""
 
     def __init__(self):
-        file_name = str(datetime.datetime.now().date()) + '.json'
+        file_name = str(datetime.datetime.now()) + '.json'
         self.file = open(file_name, 'wb')
         self.exporter = JsonItemExporter(self.file, encoding='utf-8', ensure_ascii=False)
         self.exporter.start_exporting()

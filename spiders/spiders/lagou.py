@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-import re
+import re, os, datetime
 from time import sleep
 
 import scrapy
@@ -11,7 +11,7 @@ from spiders.items import LagouJobItem, LagouJobItemLoader
 class LagouSpider(scrapy.Spider):
     name = 'lagou'
     allowed_domains = ['www.lagou.com']
-    start_urls = ['https://www.lagou.com/jobs/5677575.html']
+    start_urls = ['https://www.lagou.com/jobs/4164766.html']
 
     agent = "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_14_2) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/72.0.3626.119 Safari/537.36"
     header = {
@@ -20,19 +20,35 @@ class LagouSpider(scrapy.Spider):
         'User-Agent': agent
     }
 
-    job_urls = open('job_urls.html', 'r').read()
+    job_urls = open('jobs.html', 'r').read()
     p = re.compile(r'data-positionid="(\d+)"?')
     python_urls = p.findall(job_urls)
+    python_urls = list(set(python_urls))
     python_urls = ['https://www.lagou.com/jobs/' + url + '.html' for url in python_urls]
+
 
     def parse(self, response):
         """"""
-        for python_url in self.python_urls:
-            yield Request(url=python_url,callback=self.job_detail,meta={
-                 'dont_redirect': True,
-                 'handle_httpstatus_list': [302]
-                }, headers=self.header)
+        # file_name = '2019-03-12 17:43:25.761526.json'
+        # job_has = open(file_name, 'r').read()
+        # re_bad_urls = re.compile(r',\n\s+{\n\s+"url": "(https://www.lagou.com/jobs/\d{5,7}.html)"\n\s+}')
+        # bad_urls = re_bad_urls.findall(job_has)
+        # print('尚未爬取的数据有 ', len(bad_urls), ' 条，马上为主人爬取.....')
+        # sleep(3)
+        #
+        # if bad_urls:
+        #     self.python_urls = bad_urls
+        #     with open(file_name, 'w+') as fa:
+        #         fa.write(re.sub(re_bad_urls, '', job_has))
+        # else:
+        #     print('已完成所有数据爬取')
+        #     self.close()
 
+        for python_url in self.python_urls:
+            yield Request(url=python_url, callback=self.job_detail, meta={
+                'dont_redirect': True,
+                'handle_httpstatus_list': [302]
+            }, headers=self.header)
 
     def job_detail(self, response):
         """页面解析"""
@@ -56,6 +72,3 @@ class LagouSpider(scrapy.Spider):
         job_item = item_loader.load_item()
 
         return job_item
-
-
-
