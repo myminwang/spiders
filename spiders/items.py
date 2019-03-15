@@ -141,3 +141,12 @@ class LagouJobItem(scrapy.Item):
     company_url = scrapy.Field()
     crawl_time = scrapy.Field()
     crawl_update_time = scrapy.Field()
+
+
+class ShuangseqiuItem(scrapy.Item):
+    lottery_date = scrapy.Field()
+    issue = scrapy.Field()
+    winning_numbers = scrapy.Field()
+    sales = scrapy.Field()
+    first_prizes = scrapy.Field()
+    second_prizes = scrapy.Field()

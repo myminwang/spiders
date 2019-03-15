@@ -11,4 +11,5 @@ from scrapy.cmdline import execute
 sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 
 # execute(['scrapy', 'crawl', 'jobbole'])  # 相当于subprocess.call  类似于os.system
-execute(['scrapy', 'crawl', 'lagou'])
+# execute(['scrapy', 'crawl', 'lagou'])
+execute(['scrapy', 'crawl', 'shuangseqiu'])
