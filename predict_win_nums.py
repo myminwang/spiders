@@ -7,11 +7,44 @@ import json
 from collections import Counter
 from functools import reduce
 
-all_datas = open('2019-03-15 11:49:44.162864.json', 'r').read()
+
+all_datas = open('2019-03-17 08:53:43.573400.json', 'r').read()
 all_datas = json.loads(all_datas)  # list
 win_nums = list()
 for data_ in all_datas:
     win_nums.append(data_['winning_numbers'])
+
+
+# 中奖规则：
+def win_foo(chose_num):
+    """选中的号码，历史中奖纪录"""
+    history_wins = {'一等奖：': 0, '二等奖：': 0, '三等奖：': 0, '四等奖：': 0, '五等奖：': 0, '六等奖：': 0}
+
+    blue_get = 0
+    red_get = 0
+
+    chose_blue = chose_num.pop()
+    for win_num in win_nums:
+        win_blue = win_num[-1]
+        if chose_blue == win_blue:
+            blue_get = 1
+        red_get = len([chose_n for chose_n in chose_num if chose_n in win_num[:-1]])
+
+        if red_get == 6 and blue_get == 1:
+            history_wins['一等奖：'] += 1
+        elif red_get == 6:
+            history_wins['二等奖：'] += 1
+        elif red_get == 5 and blue_get == 1:
+            history_wins['三等奖：'] += 1
+        elif red_get == 5 or (red_get == 4 and blue_get == 1):
+            history_wins['四等奖：'] += 1
+        elif red_get == 4 or (red_get == 3 and blue_get == 1):
+            history_wins['五等奖：'] += 1
+        elif blue_get == 1:
+            history_wins['六等奖：'] += 1
+
+    return history_wins
+
 
 # 预测开奖号码
 # 思路一：每个球出现概率前三的数字
@@ -54,14 +87,15 @@ print('篮球')
 print('排名  数字  出现次数  出现概率%')
 for j in range(10):
     print(' %d    %s    %s      %.2f' % (
-    j + 1, res_blue[j][0], res_blue[j][1], int(res_blue[j][1]) / (length_blue / 100)))
+        j + 1, res_blue[j][0], res_blue[j][1], int(res_blue[j][1]) / (length_blue / 100)))
     if j == 0:
         res_02.append(res_blue[j][0])
 
 print('++++++++++++++++++++++++++++++++++')
 print('当前预测下一期中奖的号码为：')
 print('思路一：', res_01)
+history_wins = win_foo(res_01)
+print('历史中奖情况：', history_wins)
 print('思路二：', res_02)
-
-print(Counter(all_red_win).most_common(30))
-print(Counter(all_blue_win).most_common(15))
+history_wins = win_foo(res_02)
+print('历史中奖情况：', history_wins)

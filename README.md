@@ -1,6 +1,6 @@
 ## 小小爬虫项目
 [![Build Status](https://travis-ci.org/liangliangyy/DjangoBlog.svg?branch=master)](https://travis-ci.org/liangliangyy/DjangoBlog) [![python3.7](https://img.shields.io/badge/python-3.7-brightgreen.svg)]()     
-　　该项目当前可进行博客、拉钩、福彩数据的爬取，输出结果预设可存储为` json `、` xml `格式，也可以存储到` MySQL `数据库中。  
+　　该项目当前可进行博客、拉钩、福彩数据的爬取，输出结果可存储为` json `、` xml `格式，也可以存储到` MySQL `数据库中。  
 
 ### 环境
 * Python 3.7
